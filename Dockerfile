@@ -14,6 +14,7 @@ RUN apt-get -y install zsync
 RUN apt-get -y install wget
 RUN apt-get -y install fuse
 RUN apt-get -y install bzip2
+RUN apt-get -y install gawk
 
 RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.13-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
     mkdir /sbcl && \
@@ -26,6 +27,8 @@ RUN cd /tmp && \
     wget https://beta.quicklisp.org/quicklisp.lisp && \
     sbcl --load quicklisp.lisp --quit --eval '(quicklisp-quickstart:install)'
 COPY sbclrc /root/.sbclrc
+
+RUN ln -s /cl-freetype2 /root/quicklisp/local-projects
 
 RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
     cd maxima-code && \
@@ -47,15 +50,21 @@ RUN ln -s /maxima-code /root/quicklisp/local-projects/maxima-code && \
     ln -s /McCLIM /root/quicklisp/local-projects/McCLIM && \
     echo '(pushnew :mcclim-ffi-freetype *features*)' >> /root/.sbclrc
 
-RUN git clone https://github.com/McCLIM/McCLIM.git && \
+RUN git clone https://github.com/lokedhs/McCLIM.git && \
     cd McCLIM && \
-    git checkout 29cb8b96a1e8335f99c09879f9c205db46da619a
+    git checkout c5869c6be4281f43e891971be91c80b5e78fc362
+RUN sed -i 's/"libfontconfig\.so"/(:or "libfontconfig\.so\.1" "libfontconfig\.so")/' McCLIM/Extensions/fontconfig/src/functions.lisp
+RUN sed -i 's/"libharfbuzz\.so"/(:or "libharfbuzz\.so\.0" "libharfbuzz\.so")/' McCLIM/Extensions/harfbuzz/src/functions.lisp
+
+RUN git clone https://github.com/lokedhs/cl-freetype2 && \
+    cd cl-freetype2 && \
+    git checkout fe9d8108154cb4f4e46622bcaea4ba6155a3b5af
 
 COPY startup.lisp /
 RUN sbcl --load startup.lisp
 
-RUN wget 'https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage' && \
-	chmod +x appimagetool-x86_64.AppImage
+COPY appimagetool-x86_64.AppImage /
+RUN chmod +x appimagetool-x86_64.AppImage
 RUN ./appimagetool-x86_64.AppImage --appimage-extract && \
 	cp -R squashfs-root/* .
 

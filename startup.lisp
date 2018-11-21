@@ -1,6 +1,8 @@
 (sb-ext:restrict-compiler-policy 'safety 3)
 (sb-ext:restrict-compiler-policy 'debug 3)
 
+;afoo
+(ql:quickload "cffi-grovel")
 (ql:quickload "maxima-client")
 
 (defun start-maxima ()
