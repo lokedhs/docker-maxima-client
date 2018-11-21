@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=climaxima
+Exec=foo2
+Comment=CLIM-based interface to Maxima
+Icon=maxima
+Categories=Development;
+Terminal=true

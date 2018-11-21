@@ -1,0 +1,6 @@
+#!/bin/sh
+
+MAXIMA_PREFIX=$APPDIR/maxima-inst
+export MAXIMA_PREFIX
+
+$APPDIR/clim-maxima "$@"
