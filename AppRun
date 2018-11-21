@@ -3,4 +3,9 @@
 MAXIMA_PREFIX=$APPDIR/maxima-inst
 export MAXIMA_PREFIX
 
-$APPDIR/clim-maxima "$@"
+LD_LIBRARY_PATH=$APPDIR/lib
+export LD_LIBRARY_PATH
+
+#$APPDIR/clim-maxima "$@"
+cd $APPDIR
+bash

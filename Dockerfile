@@ -1,6 +1,6 @@
 FROM debian:stable
 
-RUN apt-get update && apt-get -y install git autoconf python binutils texinfo gcc libharfbuzz-dev libfontconfig1-dev libfreetype6-dev fontconfig
+RUN apt-get update && apt-get -y install git autoconf python binutils texinfo gcc
 
 RUN apt-get -y install cmake
 RUN apt-get -y install libtool
@@ -15,6 +15,40 @@ RUN apt-get -y install wget
 RUN apt-get -y install fuse
 RUN apt-get -y install bzip2
 RUN apt-get -y install gawk
+RUN apt-get -y install g++
+RUN apt-get -y install gperf
+
+RUN wget 'https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.33/util-linux-2.33.tar.gz'
+RUN zcat util-linux-2.33.tar.gz | tar xvf -
+RUN cd util-linux-2.33 && \
+    ./configure --disable-all-programs --enable-libuuid && \
+    make && \
+    make install && \
+    ldconfig
+
+RUN wget 'https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-2.1.3.tar.bz2'
+RUN bzcat harfbuzz-2.1.3.tar.bz2 | tar xf -
+RUN cd  harfbuzz-2.1.3 && \
+    ./configure && \
+    make && \
+    make install && \
+    ldconfig
+
+RUN wget 'https://download.savannah.gnu.org/releases/freetype/freetype-2.9.tar.bz2'
+RUN bzcat freetype-2.9.tar.bz2 | tar xf -
+RUN cd freetype-2.9 && \
+    ./configure && \
+    make && \
+    make install && \
+    ldconfig
+
+RUN wget 'https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.1.tar.bz2'
+RUN bzcat fontconfig-2.13.1.tar.bz2 | tar xf -
+RUN cd fontconfig-2.13.1 && \
+    ./configure && \
+    make && \
+    make install && \
+    ldconfig
 
 RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.13-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
     mkdir /sbcl && \
@@ -66,18 +100,29 @@ RUN sbcl --load startup.lisp
 COPY appimagetool-x86_64.AppImage /
 RUN chmod +x appimagetool-x86_64.AppImage
 RUN ./appimagetool-x86_64.AppImage --appimage-extract && \
-	cp -R squashfs-root/* .
+    cp -R squashfs-root/* .
 
 RUN mkdir maxima-squashfs
 WORKDIR maxima-squashfs
 
+RUN mkdir lib && \
+    cp /usr/local/lib/libharfbuzz.so lib && \
+    ln -s libharfbuzz.so lib/libharfbuzz.so.0 && \
+    cp /usr/local/lib/libfreetype.so lib && \
+    ln -s libfreetype.so lib/libfreetype.so.6 && \
+    cp /usr/local/lib/libfontconfig.so lib && \
+    ln -s libfontconfig.so lib/libfontconfig.so.1
+RUN cp /usr/lib/x86_64-linux-gnu/libpng16.so lib && \
+    ln -s libpng16.so lib/libpng16.so.16
+
 RUN mkdir maxima-inst && \
-	(cd ../maxima-code/dist && tar cf - *) | (cd maxima-inst && tar xf -)
+    (cd ../maxima-code/dist && tar cf - *) | (cd maxima-inst && tar xf -)
 RUN ln -s share/info maxima-inst/info
 
 RUN cp /clim-maxima .
 RUN mkdir maxima-client && \
-	cp -r /maxima-client/fonts /maxima-client/images maxima-client
+    cp -r /maxima-client/fonts /maxima-client/images maxima-client
+COPY fonts/* maxima-client/fonts/tex/
 
 COPY AppRun .
 RUN chmod +x AppRun
