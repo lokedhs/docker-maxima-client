@@ -6,6 +6,4 @@ export MAXIMA_PREFIX
 LD_LIBRARY_PATH=$APPDIR/lib
 export LD_LIBRARY_PATH
 
-#$APPDIR/clim-maxima "$@"
-cd $APPDIR
-bash
+$APPDIR/clim-maxima "$@"
