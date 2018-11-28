@@ -66,7 +66,7 @@ RUN ln -s /cl-freetype2 /root/quicklisp/local-projects
 
 RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
     cd maxima-code && \
-    git checkout 380cbe206af08d17147500101bb62c899c54c851
+    git checkout 4e6a6c6ef36c31b979ffb22b0ee089e966ff5452
 
 RUN cd maxima-code && \
     mkdir dist && \
@@ -77,7 +77,7 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout 08a681199c5017e21af293a70127efbf9cdbf757
+    git checkout e9d18ba6308d19cb89ad0e441f5b039ce9660cfa
 
 RUN ln -s /maxima-code /root/quicklisp/local-projects/maxima-code && \
     ln -s /maxima-client /root/quicklisp/local-projects/maxima-client && \
