@@ -1,22 +1,8 @@
 FROM debian:stable
 
-RUN apt-get update && apt-get -y install git autoconf python binutils texinfo gcc
-
-RUN apt-get -y install cmake
-RUN apt-get -y install libtool
-RUN apt-get -y install vim
-RUN apt-get -y install desktop-file-utils
-RUN apt-get -y install pkgconf
-RUN apt-get -y install libcairo2-dev
-RUN apt-get -y install libssl-dev
-RUN apt-get -y install libfuse-dev
-RUN apt-get -y install zsync
-RUN apt-get -y install wget
-RUN apt-get -y install fuse
-RUN apt-get -y install bzip2
-RUN apt-get -y install gawk
-RUN apt-get -y install g++
-RUN apt-get -y install gperf
+RUN apt-get update && apt-get -y install git autoconf python binutils \
+    texinfo gcc cmake libtool vim desktop-file-utils pkgconf libcairo2-dev \
+    libssl-dev libfuse-dev zsync wget fuse bzip2 gawk g++ gperf ghostscript
 
 RUN wget 'https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.33/util-linux-2.33.tar.gz'
 RUN zcat util-linux-2.33.tar.gz | tar xvf -
@@ -64,9 +50,9 @@ COPY sbclrc /root/.sbclrc
 
 RUN ln -s /cl-freetype2 /root/quicklisp/local-projects
 
-RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
+RUN git clone https://github.com/lokedhs/maxima-code && \
     cd maxima-code && \
-    git checkout 380cbe206af08d17147500101bb62c899c54c851
+    git checkout 6a505fe85a625f4bb70f02b6e8f6ffce0ed7814f
 
 RUN cd maxima-code && \
     mkdir dist && \
@@ -77,16 +63,16 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout 08a681199c5017e21af293a70127efbf9cdbf757
+    git checkout 7e25aeb60882e4554606483dfae1f98d238197d4
 
 RUN ln -s /maxima-code /root/quicklisp/local-projects/maxima-code && \
     ln -s /maxima-client /root/quicklisp/local-projects/maxima-client && \
     ln -s /McCLIM /root/quicklisp/local-projects/McCLIM && \
     echo '(pushnew :mcclim-ffi-freetype *features*)' >> /root/.sbclrc
 
-RUN git clone https://github.com/lokedhs/McCLIM.git && \
+RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
-    git checkout c5869c6be4281f43e891971be91c80b5e78fc362
+    git checkout 838d8d4057666bd85bae23f7f6e3e16d29067cd0
 RUN sed -i 's/"libfontconfig\.so"/(:or "libfontconfig\.so\.1" "libfontconfig\.so")/' McCLIM/Extensions/fontconfig/src/functions.lisp
 RUN sed -i 's/"libharfbuzz\.so"/(:or "libharfbuzz\.so\.0" "libharfbuzz\.so")/' McCLIM/Extensions/harfbuzz/src/functions.lisp
 
@@ -96,6 +82,11 @@ RUN git clone https://github.com/lokedhs/cl-freetype2 && \
 
 COPY startup.lisp /
 RUN sbcl --load startup.lisp
+
+RUN cd maxima-client/infoparser && \
+    ./build-binary.sh
+
+RUN sbcl --eval '(ql:quickload "infoparser")' --eval '(infoparser:generate-doc-directory)'
 
 COPY appimagetool-x86_64.AppImage /
 RUN chmod +x appimagetool-x86_64.AppImage
@@ -121,7 +112,11 @@ RUN ln -s share/info maxima-inst/info
 
 RUN cp /clim-maxima .
 RUN mkdir maxima-client && \
-    cp -r /maxima-client/fonts /maxima-client/images maxima-client
+    cp -r /maxima-client/fonts /maxima-client/images maxima-client && \
+    mkdir maxima-client/infoparser
+
+RUN cp -r /maxima-client/infoparser/docs /maxima-client/infoparser/figures maxima-client/infoparser
+
 COPY fonts/* maxima-client/fonts/tex/
 
 COPY AppRun .
