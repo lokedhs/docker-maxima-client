@@ -48,11 +48,9 @@ RUN cd /tmp && \
     sbcl --load quicklisp.lisp --quit --eval '(quicklisp-quickstart:install)'
 COPY sbclrc /root/.sbclrc
 
-RUN ln -s /cl-freetype2 /root/quicklisp/local-projects
-
 RUN git clone https://github.com/lokedhs/maxima-code && \
     cd maxima-code && \
-    git checkout 6a505fe85a625f4bb70f02b6e8f6ffce0ed7814f
+    git checkout 631f7195cb866b89c810fd78429c1feb41574038
 
 RUN cd maxima-code && \
     mkdir dist && \
@@ -63,22 +61,23 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout 7e25aeb60882e4554606483dfae1f98d238197d4
-
-RUN ln -s /maxima-code /root/quicklisp/local-projects/maxima-code && \
-    ln -s /maxima-client /root/quicklisp/local-projects/maxima-client && \
-    ln -s /McCLIM /root/quicklisp/local-projects/McCLIM && \
-    echo '(pushnew :mcclim-ffi-freetype *features*)' >> /root/.sbclrc
+    git checkout c4538a021b2dc5437bf749108a12eaadddae582c
 
 RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
-    git checkout 838d8d4057666bd85bae23f7f6e3e16d29067cd0
+    git checkout d76261d3f1e6ae97d8e762b8eb0c66089e332dea
 RUN sed -i 's/"libfontconfig\.so"/(:or "libfontconfig\.so\.1" "libfontconfig\.so")/' McCLIM/Extensions/fontconfig/src/functions.lisp
 RUN sed -i 's/"libharfbuzz\.so"/(:or "libharfbuzz\.so\.0" "libharfbuzz\.so")/' McCLIM/Extensions/harfbuzz/src/functions.lisp
 
 RUN git clone https://github.com/lokedhs/cl-freetype2 && \
     cd cl-freetype2 && \
     git checkout fe9d8108154cb4f4e46622bcaea4ba6155a3b5af
+
+RUN ln -s /maxima-code /root/quicklisp/local-projects/maxima-code && \
+    ln -s /maxima-client /root/quicklisp/local-projects/maxima-client && \
+    ln -s /McCLIM /root/quicklisp/local-projects/McCLIM && \
+    ln -s /cl-freetype2 /root/quicklisp/local-projects && \
+    echo '(pushnew :mcclim-ffi-freetype *features*)' >> /root/.sbclrc
 
 COPY startup.lisp /
 RUN sbcl --load startup.lisp
