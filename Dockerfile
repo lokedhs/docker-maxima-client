@@ -48,9 +48,9 @@ RUN cd /tmp && \
     sbcl --load quicklisp.lisp --quit --eval '(quicklisp-quickstart:install)'
 COPY sbclrc /root/.sbclrc
 
-RUN git clone https://github.com/lokedhs/maxima-code && \
+RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
     cd maxima-code && \
-    git checkout 631f7195cb866b89c810fd78429c1feb41574038
+    git checkout 304a7112d616d016d88d537ee485c9860e2dc1d0
 
 RUN cd maxima-code && \
     mkdir dist && \
@@ -61,7 +61,7 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout c4538a021b2dc5437bf749108a12eaadddae582c
+    git checkout a79762491a707ba63bbc9f596b7c0a2bfc947ecd
 
 RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
