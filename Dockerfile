@@ -50,7 +50,7 @@ COPY sbclrc /root/.sbclrc
 
 RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
     cd maxima-code && \
-    git checkout 304a7112d616d016d88d537ee485c9860e2dc1d0
+    git checkout 3bebb85ef4b03c81b7b6892afaeab975ad78f0dc
 
 RUN cd maxima-code && \
     mkdir dist && \
@@ -61,11 +61,11 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout a79762491a707ba63bbc9f596b7c0a2bfc947ecd
+    git checkout abe0bc06b4a671ce7e7ce4131746da421e0d7a33
 
 RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
-    git checkout 51166fc20489fb888950743cd04201cda3e88dd0
+    git checkout 21dd1e851de7cd9da5d8d8a766706f4c76b51f08
 RUN sed -i 's/"libfontconfig\.so"/(:or "libfontconfig\.so\.1" "libfontconfig\.so")/' McCLIM/Extensions/fontconfig/src/functions.lisp
 RUN sed -i 's/"libharfbuzz\.so"/(:or "libharfbuzz\.so\.0" "libharfbuzz\.so")/' McCLIM/Extensions/harfbuzz/src/functions.lisp
 
@@ -117,6 +117,9 @@ RUN mkdir maxima-client && \
 RUN cp -r /maxima-client/infoparser/docs /maxima-client/infoparser/figures maxima-client/infoparser
 
 COPY fonts/* maxima-client/fonts/tex/
+
+RUN mkdir -p usr/share/metainfo
+COPY climaxima.appdata.xml usr/share/metainfo/
 
 COPY AppRun .
 RUN chmod +x AppRun
