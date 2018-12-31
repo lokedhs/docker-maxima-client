@@ -36,7 +36,7 @@ RUN cd fontconfig-2.13.1 && \
     make install && \
     ldconfig
 
-RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.13-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
+RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.15-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
     mkdir /sbcl && \
     tar jxvf /tmp/sbcl.tar.bz2 --strip-components=1 -C /sbcl && \
     cd /sbcl && \
@@ -61,7 +61,7 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout abe0bc06b4a671ce7e7ce4131746da421e0d7a33
+    git checkout 45ee58922115f935db00f8d563220e522973ab73
 
 RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
