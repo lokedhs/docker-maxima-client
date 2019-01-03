@@ -50,7 +50,7 @@ COPY sbclrc /root/.sbclrc
 
 RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
     cd maxima-code && \
-    git checkout 7af4b7badffb6d8357729e3368c6aab958a959f6
+    git checkout aff43c44c0c20c9e2ba2452f76b12bc07512d87c
 
 RUN cd maxima-code && \
     mkdir dist && \
@@ -61,7 +61,7 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout 1c39cbd6b71cee9918dfb6a740a8348e8ba64b6f
+    git checkout 24f073dc42a3bdbb91581eca8108b8c6b1895e76
 
 RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
