@@ -61,11 +61,7 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-<<<<<<< HEAD
     git checkout 544a1af5031982668219711751858d017930f1d8
-=======
-    git checkout 1180d5b466cef35f77c4d1ad9c31145183acfc0a
->>>>>>> 12d0d42ba2a9917b217b2504429afbe0c565b8c0
 
 RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
