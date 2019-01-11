@@ -4,6 +4,9 @@ Maxima-Client Appimage build
 This is a docker container that is used to build the Appimage version
 of Climaxima.
 
+The main Climaxima project page can be found here:
+https://github.com/lokedhs/maxima-client
+
 Precompiled release
 -------------------
 
