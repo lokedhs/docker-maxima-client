@@ -2,7 +2,7 @@ FROM debian:stable
 
 RUN apt-get update && apt-get -y install git autoconf python binutils \
     texinfo gcc cmake libtool vim desktop-file-utils pkgconf libcairo2-dev \
-    libssl-dev libfuse-dev zsync wget fuse bzip2 gawk g++ gperf ghostscript
+    libssl-dev libfuse-dev zsync wget fuse bzip2 gawk g++ gperf ghostscript mupdf
 
 RUN wget 'https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.33/util-linux-2.33.tar.gz'
 RUN zcat util-linux-2.33.tar.gz | tar xvf -
@@ -50,7 +50,7 @@ COPY sbclrc /root/.sbclrc
 
 RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
     cd maxima-code && \
-    git checkout 8a032b7c372b6861dd66a6bfd17df69c06c0a547
+    git checkout 8d007b57983ce3efafebaecb3182606bc80a51c4
 
 RUN cd maxima-code && \
     mkdir dist && \
@@ -61,11 +61,11 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout a8f9cfbbd5611f7e0d0d57ea4a66b807f29472a1
+    git checkout 9173d3e0a22717db3dd311bd285523be36d09030
 
 RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
-    git checkout 6bd57b4537f8429068fc7b92c4bec2091459bbb6
+    git checkout 7df0a73a280428a127de854080d365289016d69b
 RUN sed -i 's/"libfontconfig\.so"/(:or "libfontconfig\.so\.1" "libfontconfig\.so")/' McCLIM/Extensions/fontconfig/src/functions.lisp
 RUN sed -i 's/"libharfbuzz\.so"/(:or "libharfbuzz\.so\.0" "libharfbuzz\.so")/' McCLIM/Extensions/harfbuzz/src/functions.lisp
 
