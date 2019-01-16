@@ -50,7 +50,7 @@ COPY sbclrc /root/.sbclrc
 
 RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
     cd maxima-code && \
-    git checkout 8d007b57983ce3efafebaecb3182606bc80a51c4
+    git checkout bdf73e5f41b4a493957ebb118649d954a2d71ec8
 
 RUN cd maxima-code && \
     mkdir dist && \
@@ -61,7 +61,7 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout 9173d3e0a22717db3dd311bd285523be36d09030
+    git checkout 564ce254916ad4a426770c867e858b351bae4076
 
 RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
@@ -85,7 +85,8 @@ RUN sbcl --load startup.lisp
 RUN cd maxima-client/infoparser && \
     ./build-binary.sh
 
-RUN sbcl --eval '(ql:quickload "infoparser")' --eval '(infoparser:generate-doc-directory)'
+COPY mkdoc.lisp /
+RUN sbcl --load mkdoc.lisp
 
 COPY appimagetool-x86_64.AppImage /
 RUN chmod +x appimagetool-x86_64.AppImage
