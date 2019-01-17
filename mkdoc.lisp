@@ -3,7 +3,7 @@
 
 (defun generate-docs ()
   (handler-case
-      (infoparser:generate-doc-directory :skip-example t)
+      (infoparser:generate-doc-directory)
     (error (condition)
       (format t "Error when generating documentation: ~a" condition)
       (uiop:quit 1))))

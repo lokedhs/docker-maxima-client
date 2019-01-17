@@ -2,7 +2,7 @@ FROM debian:stable
 
 RUN apt-get update && apt-get -y install git autoconf python binutils \
     texinfo gcc cmake libtool vim desktop-file-utils pkgconf libcairo2-dev \
-    libssl-dev libfuse-dev zsync wget fuse bzip2 gawk g++ gperf ghostscript mupdf
+    libssl-dev libfuse-dev zsync wget fuse bzip2 gawk g++ gperf ghostscript mupdf mupdf-tools
 
 RUN wget 'https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.33/util-linux-2.33.tar.gz'
 RUN zcat util-linux-2.33.tar.gz | tar xvf -
