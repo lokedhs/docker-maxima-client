@@ -2,7 +2,7 @@ FROM debian:stable
 
 RUN apt-get update && apt-get -y install git autoconf python binutils \
     texinfo gcc cmake libtool vim desktop-file-utils pkgconf libcairo2-dev \
-    libssl-dev libfuse-dev zsync wget fuse bzip2 gawk g++ gperf ghostscript mupdf mupdf-tools
+    libssl-dev libfuse-dev zsync wget fuse bzip2 gawk g++ gperf ghostscript
 
 RUN wget 'https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.33/util-linux-2.33.tar.gz'
 RUN zcat util-linux-2.33.tar.gz | tar xvf -
@@ -50,7 +50,7 @@ COPY sbclrc /root/.sbclrc
 
 RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
     cd maxima-code && \
-    git checkout bdf73e5f41b4a493957ebb118649d954a2d71ec8
+    git checkout 449e734c8bca8cf4f8cc3a26a3ef27ee58487526
 
 RUN cd maxima-code && \
     mkdir dist && \
@@ -61,11 +61,11 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout 564ce254916ad4a426770c867e858b351bae4076
+    git checkout 278ef26d74bf4ef635efedacfc54f615416fa078
 
 RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
-    git checkout 7df0a73a280428a127de854080d365289016d69b
+    git checkout 7fe87bac0e7fae1ad44fa30780519dbf20e32369
 RUN sed -i 's/"libfontconfig\.so"/(:or "libfontconfig\.so\.1" "libfontconfig\.so")/' McCLIM/Extensions/fontconfig/src/functions.lisp
 RUN sed -i 's/"libharfbuzz\.so"/(:or "libharfbuzz\.so\.0" "libharfbuzz\.so")/' McCLIM/Extensions/harfbuzz/src/functions.lisp
 
@@ -85,8 +85,7 @@ RUN sbcl --load startup.lisp
 RUN cd maxima-client/infoparser && \
     ./build-binary.sh
 
-COPY mkdoc.lisp /
-RUN sbcl --load mkdoc.lisp
+RUN sbcl --eval '(ql:quickload "infoparser")' --eval '(infoparser:generate-doc-directory)'
 
 COPY appimagetool-x86_64.AppImage /
 RUN chmod +x appimagetool-x86_64.AppImage
