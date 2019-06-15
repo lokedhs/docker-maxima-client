@@ -1,8 +1,8 @@
 FROM debian:stable
 
-RUN apt-get update && apt-get -y install git autoconf python binutils \
-    texinfo gcc cmake libtool vim desktop-file-utils pkgconf libcairo2-dev \
-    libssl-dev libfuse-dev zsync wget fuse bzip2 gawk g++ gperf ghostscript
+RUN apt-get update && apt-get -y install git autoconf python binutils texinfo \
+    gcc cmake libtool vim desktop-file-utils pkgconf libcairo2-dev libssl-dev \
+    libfuse-dev zsync wget fuse bzip2 gawk g++ gperf ghostscript mupdf mupdf-tools
 
 RUN wget 'https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.33/util-linux-2.33.tar.gz'
 RUN zcat util-linux-2.33.tar.gz | tar xvf -
@@ -36,7 +36,7 @@ RUN cd fontconfig-2.13.1 && \
     make install && \
     ldconfig
 
-RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.15-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
+RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.5.3-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
     mkdir /sbcl && \
     tar jxvf /tmp/sbcl.tar.bz2 --strip-components=1 -C /sbcl && \
     cd /sbcl && \
