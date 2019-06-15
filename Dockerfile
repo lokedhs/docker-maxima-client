@@ -50,7 +50,7 @@ COPY sbclrc /root/.sbclrc
 
 RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
     cd maxima-code && \
-    git checkout c67ed14d2d3a45d4276e3f7c486c4040030074af
+    git checkout 83e5b225c19952dbef2a43ed6884281777795362
 
 RUN cd maxima-code && \
     mkdir dist && \
