@@ -61,11 +61,11 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout 1be6c5970507c25b3f7fdda07dc09f3ae01f7250
+    git checkout 78156797f404abc837ef5b4e62396716af79c459
 
 RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
-    git checkout 97cecee4616827f2c5081b4db95aa0d9911f41c7
+    git checkout 4b07b8d55ff2ba1f6c92f6d070506cdf29776d6e
 RUN sed -i 's/"libfontconfig\.so"/(:or "libfontconfig\.so\.1" "libfontconfig\.so")/' McCLIM/Extensions/fontconfig/src/functions.lisp
 RUN sed -i 's/"libharfbuzz\.so"/(:or "libharfbuzz\.so\.0" "libharfbuzz\.so")/' McCLIM/Extensions/harfbuzz/src/functions.lisp
 
