@@ -36,7 +36,7 @@ RUN cd fontconfig-2.13.1 && \
     make install && \
     ldconfig
 
-RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.5.3-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
+RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.5.6-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
     mkdir /sbcl && \
     tar jxvf /tmp/sbcl.tar.bz2 --strip-components=1 -C /sbcl && \
     cd /sbcl && \
