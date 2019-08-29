@@ -50,7 +50,7 @@ COPY sbclrc /root/.sbclrc
 
 RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
     cd maxima-code && \
-    git checkout 83e5b225c19952dbef2a43ed6884281777795362
+    git checkout 7ddf318dc83ba0070d5349ad8e10fe583acd1454
 
 RUN cd maxima-code && \
     mkdir dist && \
@@ -61,11 +61,11 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout 78156797f404abc837ef5b4e62396716af79c459
+    git checkout b2d5ca9ae624d0dd22c661efecbcdb75f36776be
 
 RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
-    git checkout 4b07b8d55ff2ba1f6c92f6d070506cdf29776d6e
+    git checkout bc9df1f448c557c29b02852567d445af4e23ddfa
 RUN sed -i 's/"libfontconfig\.so"/(:or "libfontconfig\.so\.1" "libfontconfig\.so")/' McCLIM/Extensions/fontconfig/src/functions.lisp
 RUN sed -i 's/"libharfbuzz\.so"/(:or "libharfbuzz\.so\.0" "libharfbuzz\.so")/' McCLIM/Extensions/harfbuzz/src/functions.lisp
 
