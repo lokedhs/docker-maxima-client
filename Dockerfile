@@ -5,7 +5,7 @@ RUN apt-get update && apt-get -y install git autoconf python binutils texinfo \
     libfuse-dev zsync wget fuse bzip2 gawk g++ gperf ghostscript mupdf mupdf-tools
 
 RUN wget 'https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v2.33/util-linux-2.33.tar.gz'
-RUN zcat util-linux-2.33.tar.gz | tar xvf -
+RUN zcat util-linux-2.33.tar.gz | tar --no-same-owner -xvf -
 RUN cd util-linux-2.33 && \
     ./configure --disable-all-programs --enable-libuuid && \
     make && \
@@ -13,7 +13,7 @@ RUN cd util-linux-2.33 && \
     ldconfig
 
 RUN wget 'https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-2.1.3.tar.bz2'
-RUN bzcat harfbuzz-2.1.3.tar.bz2 | tar xf -
+RUN bzcat harfbuzz-2.1.3.tar.bz2 | tar --no-same-owner -xf -
 RUN cd  harfbuzz-2.1.3 && \
     ./configure && \
     make && \
@@ -21,7 +21,7 @@ RUN cd  harfbuzz-2.1.3 && \
     ldconfig
 
 RUN wget 'https://download.savannah.gnu.org/releases/freetype/freetype-2.9.tar.bz2'
-RUN bzcat freetype-2.9.tar.bz2 | tar xf -
+RUN bzcat freetype-2.9.tar.bz2 | tar --no-same-owner -xf -
 RUN cd freetype-2.9 && \
     ./configure && \
     make && \
@@ -29,14 +29,14 @@ RUN cd freetype-2.9 && \
     ldconfig
 
 RUN wget 'https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.1.tar.bz2'
-RUN bzcat fontconfig-2.13.1.tar.bz2 | tar xf -
+RUN bzcat fontconfig-2.13.1.tar.bz2 | tar --no-same-owner -xf -
 RUN cd fontconfig-2.13.1 && \
     ./configure && \
     make && \
     make install && \
     ldconfig
 
-RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.5.6-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
+RUN wget 'http://prdownloads.sourceforge.net/sbcl/sbcl-2.0.10-x86-64-linux-binary.tar.bz2' -O /tmp/sbcl.tar.bz2 && \
     mkdir /sbcl && \
     tar jxvf /tmp/sbcl.tar.bz2 --strip-components=1 -C /sbcl && \
     cd /sbcl && \
@@ -50,7 +50,7 @@ COPY sbclrc /root/.sbclrc
 
 RUN git clone https://git.code.sf.net/p/maxima/code maxima-code && \
     cd maxima-code && \
-    git checkout 7ddf318dc83ba0070d5349ad8e10fe583acd1454
+    git checkout d78271f532b64893bad3c63794b00534f5a9f9dc
 
 RUN cd maxima-code && \
     mkdir dist && \
@@ -61,11 +61,11 @@ RUN cd maxima-code && \
 
 RUN git clone https://github.com/lokedhs/maxima-client.git && \
     cd maxima-client && \
-    git checkout b2d5ca9ae624d0dd22c661efecbcdb75f36776be
+    git checkout 395a8ebc7754122b76d28ec9066c487872cd019a
 
 RUN git clone https://github.com/McCLIM/McCLIM.git && \
     cd McCLIM && \
-    git checkout bc9df1f448c557c29b02852567d445af4e23ddfa
+    git checkout 91ac6a722e0f0356555a96804b1e459190a0a2c6
 RUN sed -i 's/"libfontconfig\.so"/(:or "libfontconfig\.so\.1" "libfontconfig\.so")/' McCLIM/Extensions/fontconfig/src/functions.lisp
 RUN sed -i 's/"libharfbuzz\.so"/(:or "libharfbuzz\.so\.0" "libharfbuzz\.so")/' McCLIM/Extensions/harfbuzz/src/functions.lisp
 
@@ -85,7 +85,7 @@ RUN sbcl --load startup.lisp
 RUN cd maxima-client/infoparser && \
     ./build-binary.sh
 
-RUN sbcl --eval '(ql:quickload "infoparser")' --eval '(infoparser:generate-doc-directory)'
+RUN sbcl --eval '(ql:quickload "infoparser")' --eval '(infoparser:generate-doc-directory)' --quit
 
 COPY appimagetool-x86_64.AppImage /
 RUN chmod +x appimagetool-x86_64.AppImage
